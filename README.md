@@ -1,8 +1,16 @@
-These are my reasonings about thread safety. This is a simple demo whose goal is to turn a non-thread-safe counter into a thread-safe one, by using the Decorator design pattern. 
+# Reasoning on Thread Safety
 
-The code is very simple and it's not that important, my goal was to *sharpen reasoning*. The profound realization was that, in determining whether a particular class is thread-safe or not, *the client participates in this definition and it cannot simply be discarded as "the client must be unaware"*.
+These are my reasonings about thread safety. This is a simple project whose only goal was to turn a non-thread-safe counter into a thread-safe one, by using the Decorator design pattern. 
 
-This surprised me because it seems to go against one of the subtle assumptions about software, which is *client is unaware*, which is what abstractions are all about: The client does not have to know nor care how something works, and only gets a simplified, goal or task-oriented interface of that subsystem. Client imports that subsystem and the usage of that subsystem is decoupled from its outcome; For the same input, you get the same output. 
+The code is very simple and it's not important; My goal was to *sharpen reasoning about thread safety and produce my own thoughts*. I was heavily inspired by the book *Java: Concurrency in Practice*. 
+
+The profound realization was that, in determining whether a particular class is thread-safe or not, *the client participates in this definition and it cannot simply be discarded as "the client must be unaware"*. In software, we concern ourselves with abstractions and simplifying life for the caller or user.
+
+
+![thread safety](./media/thread_safety.png)
+
+
+Indeed, this has surprised me because this thread safety definition seems to go against one of the subtle assumptions about software, which is *client is unaware*, which is what abstractions are all about: The client does not have to know nor care how something works, and only gets a simplified, goal or task-oriented interface of that subsystem. Client imports that subsystem and the usage of that subsystem is decoupled from its outcome; For the same input, you get the same output. 
 
 This subtle assumption was pouring into reasonings about thread safety, namely that the client must be unaware. However, after analyzing this example and pushing myself to ask what thread safety is all about, I cannot simply have the client not participate in the definition of thread safety.
 
@@ -18,7 +26,17 @@ It's this participation and thus dependency on the client for the definition of 
 
 And it's in this last requirement that the client is fully responsible for making sure that this happens. This means that introducing concurrency has a ripple effect. Introducing a thread-safe component has the effect, or I should say, the hidden requirement, that the client *use* this component in a thread-safe context. Client cannot just drop it wherever and hope that its only job is correctly using its API; Client must actively use the component in a *thread-safe context* as well.
 
-Thus, for each *thread-safe component*, we must have an equally *thread-safe context*. The first is a guarantee of the component; The latter is a hidden requirement placed on the client, that the client must fulfill. 
+From this, my instinct is to generalize as the following: 
+
+> For each *internally thread-safe component*, said component is thread-safe from the app perspective only if, for all of its accesses, it's used in a *thread-safe context*.
+
+(I refer to *access* as the actual access of, say, a method on the object. Whereas *context* is the business meaning / concrete semantics of this access, as in, the logical unit where this access is made).
+
+We could simplify it as the following. From the app perspective, a component is thread-safe only if:
+
+>  Component is internally thread-safe AND client uses that component in a thread-safe context every time it accesses it.
+
+The first is a guarantee of the component; The latter is a hidden requirement placed on the client, that the client must fulfill. In short, when dealing with thread safety, not only must the client be aware, the client must also do their part in fulfilling the other half of the definition! Because the definition contains a logical AND, if the client cannot guarantee their part, then the component itself, as a whole, from the app perspective, is to be considered non-thread-safe.
 
 
 # Reasoning (original)
