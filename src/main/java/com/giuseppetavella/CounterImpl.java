@@ -1,4 +1,4 @@
-package com.giuseppetavella.decorator.example4;
+package com.giuseppetavella;
 
 public class CounterImpl implements Counter {
     private int count;

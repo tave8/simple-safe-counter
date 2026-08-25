@@ -1,4 +1,4 @@
-package com.giuseppetavella.decorator.example4;
+package com.giuseppetavella;
 
 public interface Counter {
     void increment();

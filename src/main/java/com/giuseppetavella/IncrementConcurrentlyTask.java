@@ -1,4 +1,4 @@
-package com.giuseppetavella.decorator.example4;
+package com.giuseppetavella;
 
 import java.util.ArrayList;
 import java.util.List;

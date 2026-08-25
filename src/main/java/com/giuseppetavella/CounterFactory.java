@@ -1,4 +1,4 @@
-package com.giuseppetavella.decorator.example4;
+package com.giuseppetavella;
 
 public class CounterFactory {
     public static Counter newCounter() {

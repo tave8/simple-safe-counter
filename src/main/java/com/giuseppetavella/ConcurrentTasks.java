@@ -1,8 +1,7 @@
-package com.giuseppetavella.decorator.example4;
+package com.giuseppetavella;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ConcurrentTasks implements Runnable {
